@@ -73,8 +73,8 @@
   }
 
   function createColumn(index) {
-    var top = 0, left = 0, width, height = "100%";
-    var offset = $element.offset();
+  	var offset = $element.offset();
+    var top = 0, left = 0, width = px($element.width()), height = "100%";
     var styles = '';
 
     switch (index) {
@@ -83,12 +83,10 @@
         break;
       case 1:
         left = px(offset.left);
-        width = px($element.width());
         height = px(offset.top);
         break;
       case 2:
         left = px(offset.left);
-        width = px($element.width());
         top = px($element.height() + offset.top);
         break;
       case 3:
