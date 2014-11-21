@@ -1,5 +1,5 @@
 {
-  "name": "Focusable element",
+  "name": "focusable-element",
   "version": "0.0.1",
   "description": "Set focus on DOM element adding overlay to the rest of the page",
   "main": "app/focus-element-overlay.js",
