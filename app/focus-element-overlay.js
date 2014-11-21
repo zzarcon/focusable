@@ -29,6 +29,9 @@
   var $overlay = null;
   var $element = null;
   var isVisible = false;
+  var options = {
+    fadeDuration: 700
+  };
 
   $(document).ready(setup);
 
@@ -39,11 +42,11 @@
   	window.addEventListener("resize", createColumns);
   }
 
-  function setFocus($el) {
+  function setFocus($el, userOptions) {
+    options = $.extend(options, userOptions);
     $element = $el;
-
-    $element.attr('id', 'focus-element');
     createColumns();
+    $overlay.fadeIn(options.fadeDuration);
   };
 
   function clearColumns() {
@@ -52,9 +55,9 @@
 
   function hide() {
   	isVisible = false;
+    $element = null;
   	$('body').css('overflow', '');
-  	clearColumns();
-  	$element = null;
+    $overlay.fadeOut(options.fadeDuration, clearColumns);
   }
 
   function createColumns() {
@@ -74,7 +77,7 @@
 
   function createColumn(index) {
   	var offset = $element.offset();
-    var top = 0, left = 0, width = px($element.width()), height = "100%";
+    var top = 0, left = 0, width = px($element.outerWidth()), height = "100%";
     var styles = '';
 
     switch (index) {
@@ -87,11 +90,11 @@
         break;
       case 2:
         left = px(offset.left);
-        top = px($element.height() + offset.top);
+        top = px($element.outerHeight() + offset.top);
         break;
       case 3:
-        width = px(offset.left);
-        left = px(($element.width() + offset.left));
+        width = "100%";
+        left = px(($element.outerWidth() + offset.left));
         break;
     }
 
@@ -113,7 +116,7 @@
 			return style.sheet;
 		})();
 
-		sheet.insertRule("#overlay-layer{ position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; overflow: hidden; pointer-events: none; }", 0);
+		sheet.insertRule("#overlay-layer{ display:none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; overflow: hidden; pointer-events: none; }", 0);
 		sheet.insertRule("#overlay-layer .column{ position: absolute; background: rgba(0,0,0,0.7); pointer-events: all; }", 1);
 
 		$('body').css('overflow', 'hidden');
