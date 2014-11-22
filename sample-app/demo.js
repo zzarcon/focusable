@@ -1,4 +1,13 @@
 $(document).ready(function() {
-  var $firstItem = $('li:first');
-  Focusable.setFocus($firstItem);
+  $('.show').on('click', show);
+  $('.hide').on('click', hide);
+
+  function show() {
+    var selector = $(this).attr('data-selector');
+    Focusable.setFocus($(selector));
+  }
+
+  function hide() {
+    Focusable.hide();
+  }
 });
