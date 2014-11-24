@@ -30,7 +30,9 @@
   var $element = null;
   var isVisible = false;
   var options = {
-    fadeDuration: 700
+    fadeDuration: 700,
+    hideOnClick: true,
+    hideOnESC: true
   };
 
   $(document).ready(setup);
@@ -38,8 +40,22 @@
   function setup() {
   	$('body').prepend('<div id="overlay-layer"></div>');
   	$overlay = $('#overlay-layer');
+
   	addStylesheet();
-  	window.addEventListener("resize", createColumns);
+    addEvents();
+  }
+
+  function addEvents() {
+    $overlay.on('click', '.column', clickOnOverlay);
+    window.addEventListener("resize", createColumns);
+  }
+
+  function clickOnOverlay() {
+    if (!options.hideOnClick) {
+      return;
+    }
+
+    hide();
   }
 
   function setFocus($el, userOptions) {
