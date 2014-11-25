@@ -32,7 +32,7 @@
   var options = {
     fadeDuration: 700,
     hideOnClick: true,
-    hideOnESC: true
+    hideOnESC: false
   };
 
   $(document).ready(setup);
@@ -47,7 +47,12 @@
 
   function addEvents() {
     $overlay.on('click', '.column', clickOnOverlay);
-    window.addEventListener("resize", createColumns);
+    $(window).on("resize", createColumns);
+    $(window).on("keyup", keyupHandler);
+  }
+
+  function keyupHandler(e) {
+    options.hideOnESC && e.keyCode === 27 && isVisible && hide();
   }
 
   function clickOnOverlay() {
@@ -133,7 +138,7 @@
 		})();
 
 		sheet.insertRule("#overlay-layer{ display:none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; overflow: hidden; pointer-events: none; }", 0);
-		sheet.insertRule("#overlay-layer .column{ position: absolute; background: rgba(0,0,0,0.7); pointer-events: all; }", 1);
+		sheet.insertRule("#overlay-layer .column{ position: absolute; background: rgba(0,0,0,0.8); pointer-events: all; }", 1);
 
 		$('body').css('overflow', 'hidden');
   }
