@@ -24,7 +24,8 @@ Focusable.hide();
 {
   fadeDuration: 700,
   hideOnClick: true,
-  hideOnESC: true
+  hideOnESC: true,
+  findOnResize: false
 }
 ```
 ### Dependencies

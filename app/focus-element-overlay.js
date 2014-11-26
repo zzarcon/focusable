@@ -32,7 +32,8 @@
   var options = {
     fadeDuration: 700,
     hideOnClick: true,
-    hideOnESC: false
+    hideOnESC: false,
+    findOnResize: false
   };
 
   $(document).ready(setup);
@@ -47,8 +48,15 @@
 
   function addEvents() {
     $overlay.on('click', '.column', clickOnOverlay);
-    $(window).on("resize", createColumns);
+    $(window).on("resize", resizeHandler);
     $(window).on("keyup", keyupHandler);
+  }
+
+  function resizeHandler() {
+    //Refind the element
+    $element = options.findOnResize ? $($element.selector) : $element;
+
+    createColumns();
   }
 
   function keyupHandler(e) {
