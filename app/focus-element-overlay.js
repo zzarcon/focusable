@@ -153,6 +153,7 @@
 
   exports.Focusable = {
     setFocus: setFocus,
-    hide: hide
+    hide: hide,
+    refresh: createColumns
   };
 })(window);

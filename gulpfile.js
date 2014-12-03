@@ -1,7 +1,6 @@
 var gulp = require('gulp'),
 	uglify = require('gulp-uglify'),
-	concat = require('gulp-concat'),
-	mocha = require('gulp-mocha');
+	concat = require('gulp-concat');
 
 var paths = {
 	scripts: './app/*'
