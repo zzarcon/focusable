@@ -23,8 +23,8 @@ Focusable.hide();
 ```javascript
 {
   fadeDuration: 700,
-  hideOnClick: true,
-  hideOnESC: true,
+  hideOnClick: false,
+  hideOnESC: false,
   findOnResize: false
 }
 ```

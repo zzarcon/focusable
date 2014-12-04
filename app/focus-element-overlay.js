@@ -31,7 +31,7 @@
   var isVisible = false;
   var options = {
     fadeDuration: 700,
-    hideOnClick: true,
+    hideOnClick: false,
     hideOnESC: false,
     findOnResize: false
   };
@@ -53,6 +53,9 @@
   }
 
   function resizeHandler() {
+    if (!$element) {
+      return;
+    }
     //Refind the element
     $element = options.findOnResize ? $($element.selector) : $element;
 
@@ -72,6 +75,7 @@
   }
 
   function setFocus($el, userOptions) {
+    $('body').css('overflow', 'hidden');
     options = $.extend(options, userOptions);
     $element = $el;
     createColumns();
@@ -147,8 +151,6 @@
 
 		sheet.insertRule("#overlay-layer{ display:none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; overflow: hidden; pointer-events: none; }", 0);
 		sheet.insertRule("#overlay-layer .column{ position: absolute; background: rgba(0,0,0,0.8); pointer-events: all; }", 1);
-
-		$('body').css('overflow', 'hidden');
   }
 
   exports.Focusable = {
