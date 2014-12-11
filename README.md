@@ -1,6 +1,6 @@
 Focusable
 =============
-An awesome and small library for perform spotlight in your DOM elements, setting an animated overlay to the rest of the page.
+An awesome and lightweight library for performing spotlight in your DOM elements, setting an animated overlay to the rest of the page.
 
 ### Showcase
 
