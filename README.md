@@ -11,23 +11,29 @@ An awesome and lightweight library for performing spotlight in your DOM elements
 ![](https://raw.github.com/zzarcon/focus-element-overlay/master/showcase/elements.gif)
 
 ### API
-###### Set spotlight
+###### Set spotlight (jQuery style)
+```javascript
+$('#my-element').setFocus(options);
+```
+###### Set spotlight (through library)
 ```javascript
 Focusable.setFocus($('#my-element'), options);
+```
+###### Refresh current focused element
+```javascript
+Focusable.refresh();
 ```
 ###### Hide spotlight
 ```javascript
 Focusable.hide();
 ```
 ###### Options
-```javascript
-{
-  fadeDuration: 700,
-  hideOnClick: false,
-  hideOnESC: false,
-  findOnResize: false
-}
-```
+Property | Value | Description
+------------ | ------------- | -------------
+fadeDuration | Number | Duration of the overlay transition (milliseconds).
+hideOnClick | Boolean | Hides the overlay when the user click into it.
+hideOnESC | Boolean | Hides the overlay when the user press Esc.
+findOnResize | Boolean | Refind the element in the DOM in case that the element don't still exists.
 ### Dependencies
 - jQuery
 ### TODO

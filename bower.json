@@ -12,7 +12,8 @@
     "dom",
     "element",
     "overlay",
-    "spotlight"
+    "spotlight",
+    "jQuery"
   ],
   "license": "MIT",
   "homepage": "www.github.com/zzarcon/focus-element-overlay",
