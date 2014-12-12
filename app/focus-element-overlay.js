@@ -39,11 +39,24 @@
   $(document).ready(setup);
 
   function setup() {
+    createPlugin();
+
   	$('body').prepend('<div id="overlay-layer"></div>');
   	$overlay = $('#overlay-layer');
 
   	addStylesheet();
     addEvents();
+  }
+
+  /**
+   * Defines Focusable as jQuey plugin
+   * @return {jQuery object} this
+   */
+  function createPlugin() {
+    $.fn.focusable = function(options) {
+      Focusable.setFocus(this, options);
+      return this;
+    };
   }
 
   function addEvents() {
