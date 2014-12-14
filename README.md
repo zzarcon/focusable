@@ -36,9 +36,12 @@ hideOnESC | Boolean | Hides the overlay when the user press Esc.
 findOnResize | Boolean | Refind the element in the DOM in case that the element don't still exists.
 ### Dependencies
 - jQuery
-### TODO
 
-- [ ] Add hightlight option
-- [ ] Add comments to code
-- [ ] Remove jQuery dependency
-- [ ] Support multiple elements at same time
+## Contributing
+
+0. Check [open issues](https://github.com/zzarcon/focusable/issues)
+1. [Fork it](https://github.com/zzarcon/focusable/fork)
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create a new Pull Request
