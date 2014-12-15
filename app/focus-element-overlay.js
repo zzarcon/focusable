@@ -1,6 +1,6 @@
 /*!
  * Focus element overlay (Focusable) v0.1
- * https://github.com/zzarcon/focus-element-overlay
+ * https://github.com/zzarcon/focusable
  *
  * Copyright (c) 2014 @zzarcon <hezarco@gmail.com>
  *
