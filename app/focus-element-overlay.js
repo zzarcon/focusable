@@ -26,51 +26,43 @@
  */
 
 (function(exports) {
-  var $overlay = null;
-  var $element = null;
+  var overlay = null;
+  var element = null;
   var isVisible = false;
   var options = {
     fadeDuration: 700,
     hideOnClick: false,
-    hideOnESC: false,
-    findOnResize: false
+    hideOnESC: false
   };
+  var body = null;
 
-  $(document).ready(setup);
+  document.addEventListener('DOMContentLoaded', setup);
 
   function setup() {
-    createPlugin();
+    body = document.body
+    var newDiv = document.createElement('div')
 
-  	$('body').prepend('<div id="overlay-layer"></div>');
-  	$overlay = $('#overlay-layer');
+    newDiv.id = "overlay-layer";
+    body.insertBefore(newDiv, body.firstChild);
+  	overlay = document.querySelector('#overlay-layer');
 
   	addStylesheet();
     addEvents();
   }
 
-  /**
-   * Defines Focusable as jQuey plugin
-   * @return {jQuery object} this
-   */
-  function createPlugin() {
-    $.fn.focusable = function(options) {
-      Focusable.setFocus(this, options);
-      return this;
-    };
-  }
-
   function addEvents() {
-    $overlay.on('click', '.column', clickOnOverlay);
-    $(window).on("resize", resizeHandler);
-    $(window).on("keyup", keyupHandler);
+    overlay.addEventListener('click', clickOnOverlay);
+    window.addEventListener('resize', resizeHandler);
+    window.addEventListener("keyup", keyupHandler);
   }
 
   function resizeHandler() {
-    if (!$element) {
+    if (!element) {
       return;
     }
     //Refind the element
-    $element = options.findOnResize ? $($element.selector) : $element;
+    // .selector should not be used anyway as its deprecated
+    // element = options.findOnResize ? $($element.selector) : element;
 
     createColumns();
   }
@@ -87,27 +79,44 @@
     hide();
   }
 
-  function setFocus($el, userOptions) {
-    $('body').css('overflow', 'hidden');
-    options = $.extend(options, userOptions);
-    $element = $el;
+  function extend(a, b){
+    for(var key in b)
+        if(b.hasOwnProperty(key))
+            a[key] = b[key];
+    return a;
+  }
+
+  function setFocus(el, userOptions) {
+    body.style.overflow = 'hidden';
+    options = extend(options, userOptions);
+    element = el;
     createColumns();
-    $overlay.fadeIn(options.fadeDuration);
+    overlay.style.display = "block";
+    // the transition won't happen at the same time as display: block; create a short delay
+    setTimeout(function() {
+      overlay.style.opacity = "1";
+    }, 50);
   };
 
   function clearColumns() {
-  	$overlay.find('.column').remove();
+    var columns = overlay.querySelectorAll('.column');
+    /* Convert nodeList into array */
+    columns = Array.prototype.slice.call(columns);
+    for (var i = 0;i < columns.length; i++) {
+      columns[i].parentNode.removeChild(columns[i]);
+    }
   }
 
   function hide() {
   	isVisible = false;
-    $element = null;
-  	$('body').css('overflow', '');
-    $overlay.fadeOut(options.fadeDuration, clearColumns);
+    element = null;
+  	body.style.overflow = '';
+    overlay.style.display = "none";
+    clearColumns();
   }
 
   function createColumns() {
-  	if (!$element) {
+  	if (!element) {
   		return;
   	}
 
@@ -122,9 +131,10 @@
   }
 
   function createColumn(index) {
-  	var offset = $element.offset();
-    var top = 0, left = 0, width = px($element.outerWidth()), height = "100%";
+    var offset = element.getBoundingClientRect();
+    var top = 0, left = 0, width = px(element.clientWidth), height = "100%";
     var styles = '';
+    var columnDiv = document.createElement('div');
 
     switch (index) {
       case 0:
@@ -136,16 +146,19 @@
         break;
       case 2:
         left = px(offset.left);
-        top = px($element.outerHeight() + offset.top);
+        top = px(element.clientHeight + offset.top);
         break;
       case 3:
         width = "100%";
-        left = px(($element.outerWidth() + offset.left));
+        left = px((element.clientWidth + offset.left));
         break;
     }
 
     styles = 'top:' + top + ';left:' + left + ';width:' + width + ';height:' + height;
-    $overlay.append('<div class="column" style="' + styles + '"></div>');
+    columnDiv.className = "column"
+    columnDiv.setAttribute('style', styles);
+
+    overlay.appendChild(columnDiv);
   }
 
   function px(value) {
@@ -162,7 +175,7 @@
 			return style.sheet;
 		})();
 
-		sheet.insertRule("#overlay-layer{ display:none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; overflow: hidden; pointer-events: none; }", 0);
+		sheet.insertRule("#overlay-layer{ display:none; opacity:0; transition: opacity 700ms; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; overflow: hidden; pointer-events: none; }", 0);
 		sheet.insertRule("#overlay-layer .column{ position: absolute; background: rgba(0,0,0,0.8); pointer-events: all; }", 1);
   }
 
