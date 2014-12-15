@@ -1,6 +1,7 @@
 var gulp = require('gulp'),
 	uglify = require('gulp-uglify'),
-	concat = require('gulp-concat');
+	concat = require('gulp-concat'),
+    rename = require('gulp-rename');
 
 var paths = {
 	scripts: './app/*'
@@ -12,10 +13,10 @@ function handleError(err) {
 }
 
 gulp.task('js', function() {
-	gulp.src(paths.scripts + '.js')
+	gulp.src('app/focus-element-overlay.js')
 		.pipe(uglify())
-		.pipe(concat('focus-element-overlay.min.js'))
-		.pipe(gulp.dest('./app'));
+        .pipe(rename('focus-element-overlay.min.js'))
+		.pipe(gulp.dest('app'));
 });
 
 gulp.task('watch', function() {
