@@ -1,7 +1,7 @@
 Focusable
 =============
 An awesome and lightweight library for performing spotlight in your DOM elements, setting an animated overlay to the rest of the page.
-You can find a [live demo here](http://www.mrdrozdov.com/focusable/sample-app/index.html)
+You can find a [live demo here](http://zzarcon.github.io/focusable/).
 
 ### Showcase
 
