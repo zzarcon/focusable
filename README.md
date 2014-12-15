@@ -29,12 +29,12 @@ Focusable.refresh();
 Focusable.hide();
 ```
 ###### Options
-Property | Value | Description
------------- | ------------- | -------------
-fadeDuration | Number | Duration of the overlay transition (milliseconds).
-hideOnClick | Boolean | Hides the overlay when the user click into it.
-hideOnESC | Boolean | Hides the overlay when the user press Esc.
-findOnResize | Boolean | Refind the element in the DOM in case that the element don't still exists.
+Property | Value | Default | Description
+------------ | ------------- | ------------- | -------------
+fadeDuration | Number | 700 | Duration of the overlay transition (milliseconds).
+hideOnClick | Boolean | false | Hides the overlay when the user click into it.
+hideOnESC | Boolean | false | Hides the overlay when the user press Esc.
+findOnResize | Boolean | false | Refind the element in the DOM in case that the element don't still exists.
 ### Dependencies
 - jQuery
 
