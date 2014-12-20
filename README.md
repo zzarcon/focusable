@@ -46,3 +46,6 @@ findOnResize | Boolean | false | Refind the element in the DOM in case that the 
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
+
+## Author
+You can follow me on Twitter - https://twitter.com/zzarcon
