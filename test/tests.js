@@ -9,6 +9,9 @@
     return isOverlayInDom && areColumnsInDom;
   }
 
+  /**
+   * Return a element wrapping the find in the quinit fixture DOM
+   */
   function find(selector) {
     return $('#qunit-fixture').find(selector);
   }
@@ -20,11 +23,11 @@
   });
 
   test("Set focus on an element", function() {
-    var $header = find('header');
-    Focusable.setFocus($header);
+    var $element = find('header');
+    Focusable.setFocus($element);
 
     ok(isActive(), true, 'The overlay is in DOM');
-    ok(Focusable.getActiveElement() == $header, true, 'The focused element is active');
+    ok(Focusable.getActiveElement() == $element, true, 'The focused element is active');
   });
 
   test("jQuery plugin", function() {
@@ -41,13 +44,27 @@
     ok(!options.findOnResize, true);
   });
 
-  // test("Hide focus", function() {
+  test("Hide focus", function() {
+    var $element = find('li:first');
 
-  //   // ok(hideOnClick: false)
-  //   // ok(hideOnESC: false)
-  // });
+    Focusable.setFocus($element);
+    ok(isActive(), true, 'The overlay is in DOM');
 
-  // test("Find element on resize", function() {
-  //   //findOnResize
-  // });
+    Focusable.hide();
+    ok(isActive(), false, 'The overlay is inactive');
+  });
+
+  test("Hide options", function(assert) {
+    assert.expect(2);
+    Focusable.setFocus(find('ul'), {
+      hideOnClick: true,
+      hideOnESC: true
+    });
+
+    assert.ok(isActive(), true, 'The overlay is in DOM');
+
+    //Simulate click on overlay
+    $('#overlay-layer .column:first').click();
+    assert.ok(isActive(), false, 'The overlay is inactive');
+  });
 })();
