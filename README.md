@@ -28,6 +28,11 @@ Focusable.refresh();
 ```javascript
 Focusable.hide();
 ```
+###### Get focused element
+```javascript
+Focusable.getActiveElement();
+```
+
 ###### Options
 Property | Value | Default | Description
 ------------ | ------------- | ------------- | -------------
@@ -35,10 +40,16 @@ fadeDuration | Number | 700 | Duration of the overlay transition (milliseconds).
 hideOnClick | Boolean | false | Hides the overlay when the user click into it.
 hideOnESC | Boolean | false | Hides the overlay when the user press Esc.
 findOnResize | Boolean | false | Refind the element in the DOM in case that the element don't still exists.
-### Dependencies
+
+###### Runing tests
+* `npm install`
+* `grunt`
+* See the result of testsuite in [http://localhost:9092](http://localhost:9092)
+
+###### Dependencies
 - jQuery
 
-## Contributing
+###### Contributing
 
 0. Check [open issues](https://github.com/zzarcon/focusable/issues)
 1. [Fork it](https://github.com/zzarcon/focusable/fork)
@@ -47,5 +58,5 @@ findOnResize | Boolean | false | Refind the element in the DOM in case that the 
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
 
-## Author
+###### Author
 You can follow me on Twitter - https://twitter.com/zzarcon
