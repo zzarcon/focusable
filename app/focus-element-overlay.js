@@ -166,9 +166,19 @@
 		sheet.insertRule("#overlay-layer .column{ position: absolute; background: rgba(0,0,0,0.8); pointer-events: all; }", 1);
   }
 
+  function getActiveElement() {
+    return $element;
+  }
+
+  function getOptions() {
+    return options;
+  }
+
   exports.Focusable = {
     setFocus: setFocus,
     hide: hide,
-    refresh: createColumns
+    refresh: createColumns,
+    getActiveElement: getActiveElement,
+    getOptions: getOptions
   };
 })(window);

@@ -1,0 +1,9 @@
+node_js:
+  - "0.10"
+before_install:
+  - npm install -g grunt-cli
+  - "export PHANTOMJS_BIN=`which phantomjs`"
+install:
+  - "npm install"
+script:
+  - grunt test
