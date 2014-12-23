@@ -43,7 +43,7 @@
   function setup() {
     $columnWrapper = $('body');
     createPlugin();
-  	addStylesheet();
+    addStylesheet();
     addEvents();
   }
 
@@ -75,7 +75,7 @@
     //Refind the element
     $element = options.findOnResize ? $($element.selector) : $element;
 
-    createColumns();
+    refresh();
   }
 
   function keyupHandler(e) {
@@ -99,33 +99,37 @@
   };
 
   function clearColumns() {
-  	$columnWrapper.find(columnSelector).remove();
+    $columnWrapper.find(columnSelector).remove();
   }
 
   function hide() {
-  	isVisible = false;
+    isVisible = false;
     $element = null;
-  	$('body').css('overflow', '');
+    $('body').css('overflow', '');
     $columnWrapper.find(columnSelector).fadeOut(options.fadeDuration, clearColumns);
   }
 
-  function createColumns() {
-  	if (!$element) {
-  		return;
-  	}
+  function createColumns(forceVisibility) {
+    if (!$element) {
+      return;
+    }
 
-		var createdColumns = 0;
-  	isVisible = true;
-  	clearColumns();
+    var createdColumns = 0;
+    isVisible = true;
+    clearColumns();
 
     while (createdColumns < 4) {
       createColumn(createdColumns);
       createdColumns++;
     }
+
+    if (forceVisibility === true) {
+      $(columnSelector).show();
+    }
   }
 
   function createColumn(index) {
-  	var offset = $element.offset();
+    var offset = $element.offset();
     var top = 0, left = 0, width = px($element.outerWidth()), height = "100%";
     var styles = '';
 
@@ -165,16 +169,16 @@
    * @return {Void}
    */
   function addStylesheet() {
-  	var sheet = (function() {
-			var style = document.createElement("style");
+    var sheet = (function() {
+      var style = document.createElement("style");
 
-			style.appendChild(document.createTextNode(""));
-			document.head.appendChild(style);
+      style.appendChild(document.createTextNode(""));
+      document.head.appendChild(style);
 
-			return style.sheet;
-		})();
+      return style.sheet;
+    })();
 
-		sheet.insertRule(columnSelector + "{ display:none; position: absolute; background: rgba(0,0,0,0.8); }", 0);
+    sheet.insertRule(columnSelector + "{ display:none; position: absolute; z-index: 9999; background: rgba(0,0,0,0.8); }", 0);
   }
 
   function getActiveElement() {
@@ -189,10 +193,14 @@
     return isVisible;
   }
 
+  function refresh() {
+    createColumns(true);
+  }
+
   exports.Focusable = {
     setFocus: setFocus,
     hide: hide,
-    refresh: createColumns,
+    refresh: refresh,
     getActiveElement: getActiveElement,
     getOptions: getOptions,
     isVisible: getVisibility
