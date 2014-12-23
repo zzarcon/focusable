@@ -33,7 +33,7 @@ module.exports = function(grunt) {
     uglify: {
       build: {
         src: ['app/focus-element-overlay.js'],
-        dest: 'focus-element-overlay.min.js'
+        dest: 'app/focus-element-overlay.min.js'
       }
     },
 

@@ -26,9 +26,11 @@
  */
 
 (function(exports) {
-  var $overlay = null;
+  var $columnWrapper = null;
   var $element = null;
   var isVisible = false;
+  var columnClass = 'focusable-column';
+  var columnSelector = '.' + columnClass;
   var options = {
     fadeDuration: 700,
     hideOnClick: false,
@@ -39,11 +41,8 @@
   $(document).ready(setup);
 
   function setup() {
+    $columnWrapper = $('body');
     createPlugin();
-
-  	$('body').prepend('<div id="overlay-layer"></div>');
-  	$overlay = $('#overlay-layer');
-
   	addStylesheet();
     addEvents();
   }
@@ -53,6 +52,10 @@
    * @return {jQuery object} this
    */
   function createPlugin() {
+    if (!window.jQuery || !window.$ || !window.$.fn) {
+      return;
+    }
+
     $.fn.focusable = function(options) {
       Focusable.setFocus(this, options);
       return this;
@@ -60,7 +63,7 @@
   }
 
   function addEvents() {
-    $overlay.on('click', '.column', clickOnOverlay);
+    $columnWrapper.on('click', columnSelector, clickOnOverlay);
     $(window).on("resize", resizeHandler);
     $(window).on("keyup", keyupHandler);
   }
@@ -92,18 +95,18 @@
     options = $.extend(options, userOptions);
     $element = $el;
     createColumns();
-    $overlay.fadeIn(options.fadeDuration);
+    $columnWrapper.find(columnSelector).fadeIn(options.fadeDuration);
   };
 
   function clearColumns() {
-  	$overlay.find('.column').remove();
+  	$columnWrapper.find(columnSelector).remove();
   }
 
   function hide() {
   	isVisible = false;
     $element = null;
   	$('body').css('overflow', '');
-    $overlay.fadeOut(options.fadeDuration, clearColumns);
+    $columnWrapper.find(columnSelector).fadeOut(options.fadeDuration, clearColumns);
   }
 
   function createColumns() {
@@ -145,13 +148,22 @@
     }
 
     styles = 'top:' + top + ';left:' + left + ';width:' + width + ';height:' + height;
-    $overlay.append('<div class="column" style="' + styles + '"></div>');
+    $columnWrapper.prepend('<div class="' + columnClass + '" style="' + styles + '"></div>');
   }
 
+  /**
+   * Prepend px to the received value
+   * @return {String}
+   */
   function px(value) {
     return value + 'px';
   }
 
+  /**
+   * Create dynamic CSS rules required by the library;
+   * Using this approach we avoid to include an external css file.
+   * @return {Void}
+   */
   function addStylesheet() {
   	var sheet = (function() {
 			var style = document.createElement("style");
@@ -162,8 +174,7 @@
 			return style.sheet;
 		})();
 
-		sheet.insertRule("#overlay-layer{ display:none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; overflow: hidden; pointer-events: none; }", 0);
-		sheet.insertRule("#overlay-layer .column{ position: absolute; background: rgba(0,0,0,0.8); pointer-events: all; }", 1);
+		sheet.insertRule(columnSelector + "{ display:none; position: absolute; background: rgba(0,0,0,0.8); }", 0);
   }
 
   function getActiveElement() {
@@ -174,11 +185,16 @@
     return options;
   }
 
+  function getVisibility() {
+    return isVisible;
+  }
+
   exports.Focusable = {
     setFocus: setFocus,
     hide: hide,
     refresh: createColumns,
     getActiveElement: getActiveElement,
-    getOptions: getOptions
+    getOptions: getOptions,
+    isVisible: getVisibility
   };
 })(window);
