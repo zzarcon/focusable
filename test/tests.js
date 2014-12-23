@@ -2,11 +2,9 @@
   "use strict";
 
   function isActive() {
-    var $layer = $('#overlay-layer');
-    var isOverlayInDom = $layer.length === 1;
-    var areColumnsInDom = $layer.find('.column').length === 4;
+    var areColumnsInDom = $('.focusable-column').length === 4;
 
-    return isOverlayInDom && areColumnsInDom;
+    return areColumnsInDom;
   }
 
   /**
