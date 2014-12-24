@@ -35,6 +35,7 @@ Focusable.getActiveElement();
 ###### Get options
 ```javascript
 Focusable.getOptions();
+```
 
 ###### Options
 Property | Value | Default | Description
