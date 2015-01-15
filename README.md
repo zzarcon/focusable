@@ -1,5 +1,7 @@
 Focusable [![Build Status](https://travis-ci.org/zzarcon/focusable.svg?branch=master)](https://travis-ci.org/zzarcon/focusable)
 =============
+
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/zzarcon/focusable?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 An awesome and lightweight library for performing spotlight in your DOM elements, setting an animated overlay to the rest of the page.
 You can find a [live demo here](http://zzarcon.github.io/focusable/).
 
