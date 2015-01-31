@@ -19,11 +19,24 @@
   var columnClass = 'focusable-column'
   var columnSelector = '.' + columnClass
 
+  var toArray = Array.prototype.slice
+  var hasOwn = Object.prototype.hasOwnProperty
+
   var options = {
     fadeDuration: 700,
     hideOnClick: false,
     hideOnESC: false,
     findOnResize: false
+  }
+
+  function merge(target) {
+    var i, l, x, cur, args = toArray.call(arguments).slice(1)
+    target = merge({}, target)
+    for (i = 0, l = args.length; i < l; i += 1) {
+      cur = args[i]
+      for (x in cur) if (hasOwn.call(cur, x)) target[x] = cur[x]
+    }
+    return target
   }
 
   $(document).ready(setup)
@@ -58,10 +71,10 @@
     hide()
   }
 
-  function setFocus($el, userOptions) {
+  function setFocus(node, userOptions) {
     $('body').css('overflow', 'hidden')
-    options = $.extend(options, userOptions)
-    element = $el
+    userOptions = merge(options, userOptions)
+    element = node
     createColumns()
     columnWrapper.find(columnSelector).fadeIn(options.fadeDuration)
   }
