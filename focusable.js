@@ -18,7 +18,7 @@
   var isVisible = false
   var columnClass = 'focusable-column'
   var columnSelector = '.' + columnClass
-  
+
   var options = {
     fadeDuration: 700,
     hideOnClick: false,
@@ -30,35 +30,19 @@
 
   function setup() {
     columnWrapper = $('body')
-    createPlugin()
     addStylesheet()
     addEvents()
   }
 
-  /**
-   * Defines Focusable as jQuey plugin
-   * @return {jQuery object} this
-   */
-  function createPlugin() {
-    if (!window.jQuery || !window.$ || !window.$.fn) {
-      return
-    }
-
-    $.fn.focusable = function(options) {
-      Focusable.setFocus(this, options)
-      return this
-    }
-  }
-
   function addEvents() {
     columnWrapper.on('click', columnSelector, clickOnOverlay)
-    $(window).on("resize", resizeHandler)
-    $(window).on("keyup", keyupHandler)
+    $(window).on('resize', resizeHandler)
+    $(window).on('keyup', keyupHandler)
   }
 
   function resizeHandler() {
     if (!element) { return }
-    
+
     // Refind the element
     element = options.findOnResize ? $(element.selector) : element
 
@@ -117,7 +101,7 @@
     var styles = ''
     var offset = element.offset()
     var top = 0, left = 0, width = px(element.outerWidth()), height = "100%"
-    
+
     switch (index) {
       case 0:
         width = px(offset.left)

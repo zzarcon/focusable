@@ -12,7 +12,7 @@ uglify:
 	$(UGLIFYJS) focusable.js --mangle --preamble $(BANNER) --source-map focusable.min.js.map --source-map-url http://cdn.rawgit.com/zzarcon/focusable/$(VERSION)/focusable.min.js.map > focusable.min.js
 
 mocha:
-	$(MOCHA_PHANTOM) --reporter bdd
+	$(MOCHA_PHANTOM) --reporter spec --ui bdd test/runner.html
 
 loc:
 	wc -l focusable.js
