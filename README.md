@@ -1,7 +1,8 @@
-Focusable [![Build Status](https://travis-ci.org/zzarcon/focusable.svg?branch=master)](https://travis-ci.org/zzarcon/focusable)
-=============
-An awesome and lightweight library for performing spotlight in your DOM elements, setting an animated overlay to the rest of the page.
-You can find a [live demo here](http://zzarcon.github.io/focusable/).
+# Focusable  [![Build Status](https://travis-ci.org/zzarcon/focusable.svg?branch=master)](https://travis-ci.org/zzarcon/focusable)
+
+An awesome and lightweight library for performing spotlight in your DOM elements, setting an animated overlay to the rest of the page. 
+
+You can find a [live demo here](http://zzarcon.github.io/focusable/)
 
 ### Showcase
 
@@ -12,27 +13,34 @@ You can find a [live demo here](http://zzarcon.github.io/focusable/).
 ![](https://raw.github.com/zzarcon/focus-element-overlay/master/showcase/elements.gif)
 
 ### API
+
 ###### Set spotlight (jQuery style)
+
 ```javascript
 $('#my-element').setFocus(options);
 ```
 ###### Set spotlight (through library)
+
 ```javascript
 Focusable.setFocus($('#my-element'), options);
 ```
 ###### Refresh current focused element
+
 ```javascript
 Focusable.refresh();
 ```
 ###### Hide spotlight
+
 ```javascript
 Focusable.hide();
 ```
 ###### Get focused element
+
 ```javascript
 Focusable.getActiveElement();
 ```
 ###### Get options
+
 ```javascript
 Focusable.getOptions();
 ```
