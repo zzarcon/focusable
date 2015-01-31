@@ -1,6 +1,5 @@
 VERSION = 0.1.0
 BROWSERIFY = node ./node_modules/browserify/bin/cmd.js
-MOCHA = ./node_modules/.bin/mocha
 UGLIFYJS = ./node_modules/.bin/uglifyjs
 BANNER = "/*! focusable - v$(VERSION) - MIT License - https://github.com/zzarcon/focusable */"
 MOCHA_PHANTOM = ./node_modules/.bin/mocha-phantomjs
@@ -14,7 +13,7 @@ uglify:
 	$(UGLIFYJS) focusable.js --mangle --preamble $(BANNER) --source-map focusable.min.js.map --source-map-url http://cdn.rawgit.com/lil-js/http/$(VERSION)/focusable.min.js.map > focusable.min.js
 
 mocha:
-	bash ./test/run.sh 8888
+	$(MOCHA_PHANTOM) --ui bdd
 
 loc:
 	wc -l focusable.js
