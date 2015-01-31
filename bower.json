@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "license": "MIT",
   "description": "Set focus on DOM element adding overlay to the rest of the page",
-  "homepage": "zzarcon/focusable",
+  "repository": "zzarcon/focusable",
   "authors": [
     "Hector Zarco (zzarcon)",
     "Tomas Aparicio (h2non)"

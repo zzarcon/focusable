@@ -3,22 +3,22 @@
   "version": "0.1.0",
   "license": "MIT",
   "description": "Set focus on DOM element adding overlay to the rest of the page",
-  "homepage": "zzarcon/focusable",
+  "repository": "zzarcon/focusable",
   "authors": [
     "Hector Zarco (zzarcon)",
     "Tomas Aparicio (h2non)"
   ],
   "main": "focusable.js",
+  "scripts": [
+    "focusable.js",
+    "focusable.min.js",
+    "focusable.min.js.map"
+  ],
   "keywords": [
     "focus",
     "dom",
     "element",
     "overlay",
     "spotlight"
-  ],
-  "ignore": [
-    "sample-app",
-    ".gitignore",
-    ".travis.yml"
   ]
 }

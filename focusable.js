@@ -11,27 +11,28 @@
     factory(root)
   }
 }(this, function (exports) {
-  'use strict';
+  'use strict'
 
-  var $columnWrapper = null;
-  var $element = null;
-  var isVisible = false;
-  var columnClass = 'focusable-column';
-  var columnSelector = '.' + columnClass;
+  var columnWrapper = null
+  var element = null
+  var isVisible = false
+  var columnClass = 'focusable-column'
+  var columnSelector = '.' + columnClass
+  
   var options = {
     fadeDuration: 700,
     hideOnClick: false,
     hideOnESC: false,
     findOnResize: false
-  };
+  }
 
-  $(document).ready(setup);
+  $(document).ready(setup)
 
   function setup() {
-    $columnWrapper = $('body');
-    createPlugin();
-    addStylesheet();
-    addEvents();
+    columnWrapper = $('body')
+    createPlugin()
+    addStylesheet()
+    addEvents()
   }
 
   /**
@@ -40,106 +41,103 @@
    */
   function createPlugin() {
     if (!window.jQuery || !window.$ || !window.$.fn) {
-      return;
+      return
     }
 
     $.fn.focusable = function(options) {
-      Focusable.setFocus(this, options);
-      return this;
-    };
+      Focusable.setFocus(this, options)
+      return this
+    }
   }
 
   function addEvents() {
-    $columnWrapper.on('click', columnSelector, clickOnOverlay);
-    $(window).on("resize", resizeHandler);
-    $(window).on("keyup", keyupHandler);
+    columnWrapper.on('click', columnSelector, clickOnOverlay)
+    $(window).on("resize", resizeHandler)
+    $(window).on("keyup", keyupHandler)
   }
 
   function resizeHandler() {
-    if (!$element) {
-      return;
-    }
-    //Refind the element
-    $element = options.findOnResize ? $($element.selector) : $element;
+    if (!element) { return }
+    
+    // Refind the element
+    element = options.findOnResize ? $(element.selector) : element
 
-    refresh();
+    refresh()
   }
 
   function keyupHandler(e) {
-    options.hideOnESC && e.keyCode === 27 && isVisible && hide();
+    options.hideOnESC && e.keyCode === 27 && isVisible && hide()
   }
 
   function clickOnOverlay() {
     if (!options.hideOnClick) {
-      return;
+      return
     }
 
-    hide();
+    hide()
   }
 
   function setFocus($el, userOptions) {
-    $('body').css('overflow', 'hidden');
-    options = $.extend(options, userOptions);
-    $element = $el;
-    createColumns();
-    $columnWrapper.find(columnSelector).fadeIn(options.fadeDuration);
-  };
+    $('body').css('overflow', 'hidden')
+    options = $.extend(options, userOptions)
+    element = $el
+    createColumns()
+    columnWrapper.find(columnSelector).fadeIn(options.fadeDuration)
+  }
 
   function clearColumns() {
-    $columnWrapper.find(columnSelector).remove();
+    columnWrapper.find(columnSelector).remove()
   }
 
   function hide() {
-    isVisible = false;
-    $element = null;
-    $('body').css('overflow', '');
-    $columnWrapper.find(columnSelector).fadeOut(options.fadeDuration, clearColumns);
+    isVisible = false
+    element = null
+    $('body').css('overflow', '')
+    columnWrapper.find(columnSelector).fadeOut(options.fadeDuration, clearColumns)
   }
 
   function createColumns(forceVisibility) {
-    if (!$element) {
-      return;
-    }
+    if (!element) { return }
 
-    var createdColumns = 0;
-    isVisible = true;
-    clearColumns();
+    var createdColumns = 0
+    isVisible = true
+    clearColumns()
 
     while (createdColumns < 4) {
-      createColumn(createdColumns);
-      createdColumns++;
+      createColumn(createdColumns)
+      createdColumns++
     }
 
     if (forceVisibility === true) {
-      $(columnSelector).show();
+      $(columnSelector).show()
     }
   }
 
   function createColumn(index) {
-    var offset = $element.offset();
-    var top = 0, left = 0, width = px($element.outerWidth()), height = "100%";
-    var styles = '';
-
+    var styles = ''
+    var offset = element.offset()
+    var top = 0, left = 0, width = px(element.outerWidth()), height = "100%"
+    
     switch (index) {
       case 0:
-        width = px(offset.left);
-        break;
+        width = px(offset.left)
+        break
       case 1:
-        left = px(offset.left);
-        height = px(offset.top);
-        break;
+        left = px(offset.left)
+        height = px(offset.top)
+        break
       case 2:
-        left = px(offset.left);
-        top = px($element.outerHeight() + offset.top);
-        break;
+        left = px(offset.left)
+        top = px(element.outerHeight() + offset.top)
+        break
       case 3:
-        width = "100%";
-        left = px(($element.outerWidth() + offset.left));
+        width = "100%"
+        left = px((element.outerWidth() + offset.left))
         break;
     }
 
-    styles = 'top:' + top + ';left:' + left + ';width:' + width + ';height:' + height;
-    $columnWrapper.prepend('<div class="' + columnClass + '" style="' + styles + '"></div>');
+    styles = 'top:' + top + ';left:' + left + ';width:' + width + ';height:' + height
+    columnWrapper.prepend('<div class="' + columnClass + '" style="' + styles + '"></div>')
   }
 
   /**
@@ -147,7 +145,7 @@
    * @return {String}
    */
   function px(value) {
-    return value + 'px';
+    return value + 'px'
   }
 
   /**
@@ -157,31 +155,31 @@
    */
   function addStylesheet() {
     var sheet = (function() {
-      var style = document.createElement("style");
+      var style = document.createElement("style")
 
-      style.appendChild(document.createTextNode(""));
-      document.head.appendChild(style);
+      style.appendChild(document.createTextNode(""))
+      document.head.appendChild(style)
 
-      return style.sheet;
-    })();
+      return style.sheet
+    })()
 
-    sheet.insertRule(columnSelector + "{ display:none; position: absolute; z-index: 9999; background: rgba(0,0,0,0.8); }", 0);
+    sheet.insertRule(columnSelector + "{ display:none; position: absolute; z-index: 9999; background: rgba(0,0,0,0.8); }", 0)
   }
 
   function getActiveElement() {
-    return $element;
+    return element
   }
 
   function getOptions() {
-    return options;
+    return options
   }
 
   function getVisibility() {
-    return isVisible;
+    return isVisible
   }
 
   function refresh() {
-    createColumns(true);
+    createColumns(true)
   }
 
   exports.Focusable = {
@@ -191,5 +189,6 @@
     getActiveElement: getActiveElement,
     getOptions: getOptions,
     isVisible: getVisibility
-  };
-})(window);
+  }
+
+}))
