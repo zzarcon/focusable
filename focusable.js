@@ -54,10 +54,7 @@
   }
 
   function clickOnOverlay() {
-    if (!options.hideOnClick) {
-      return
-    }
-
+    if (!options.hideOnClick) { return }
     hide()
   }
 
@@ -138,16 +135,20 @@
    * @return {Void}
    */
   function addStylesheet() {
-    var sheet = (function() {
-      var style = document.createElement("style")
+    var sheet = appendStylesheet()
+    sheet.insertRule(columnSelector + '{'
+     + 'display:none;'
+     + 'position: absolute;'
+     + 'z-index: 9999;'
+     + 'background: rgba(0,0,0,0.8);'
+     + '}', 0)
+  }
 
-      style.appendChild(document.createTextNode(""))
-      document.head.appendChild(style)
-
-      return style.sheet
-    })()
-
-    sheet.insertRule(columnSelector + "{ display:none; position: absolute; z-index: 9999; background: rgba(0,0,0,0.8); }", 0)
+  function appendStylesheet() {
+    var style = document.createElement('style')
+    style.appendChild(document.createTextNode(''))
+    document.head.appendChild(style)
+    return style.sheet
   }
 
   function getActiveElement() {
