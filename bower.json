@@ -2,7 +2,7 @@
   "name": "focusable",
   "version": "0.1.0",
   "license": "MIT",
-  "description": "Set focus on DOM element adding overlay to the rest of the page",
+  "description": "Spotlight on DOM elements adding an overlay on the rest of the page",
   "repository": "zzarcon/focusable",
   "authors": [
     "Hector Zarco (zzarcon)",
@@ -19,6 +19,13 @@
   "ignore": [
     "sample-app",
     ".gitignore",
-    ".travis.yml"
+    ".travis.yml",
+    ".editorconfig",
+    "Makefile",
+    "package.json",
+    "component.json",
+    "test",
+    "showcase",
+    "example"
   ]
 }

@@ -1,7 +1,7 @@
 {
   "name": "focusable",
   "version": "0.1.0",
-  "description": "Set focus on DOM element adding overlay to the rest of the page",
+  "description": "Spotlight on DOM elements adding an overlay on the rest of the page",
   "main": "focusable.js",
   "repository": "zzarcon/focusable",
   "authors": [
@@ -12,14 +12,14 @@
   "scripts": {
     "test": "make test"
   },
+  "keywords": [
+    "focus",
+    "dom",
+    "element",
+    "overlay",
+    "spotlight"
+  ],
   "devDependencies": {
-    "grunt": "^0.4.1",
-    "grunt-contrib-concat": "^0.3.0",
-    "grunt-contrib-connect": "^0.5.0",
-    "grunt-contrib-jshint": "^0.6.4",
-    "grunt-contrib-qunit": "^0.2.2",
-    "grunt-contrib-uglify": "^0.2.4",
-    "grunt-contrib-watch": "^0.5.3",
     "http-server": "^0.7.4",
     "mocha-phantomjs": "^3.5.3",
     "sinon": "^1.12.2",
