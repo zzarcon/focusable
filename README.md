@@ -30,7 +30,7 @@ npm install focuable
 ```
 
 Or loading the script remotely
-```bash
+```html
 <script src="//cdn.rawgit.com/zzarcon/focusable/0.1.0/focusable.js"></script>
 ```
 
