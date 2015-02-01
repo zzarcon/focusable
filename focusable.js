@@ -13,10 +13,9 @@
 }(this, function (exports) {
   'use strict'
 
-  var NODE_ID = 'focusaable-overlay-layer'
+  var NODE_ID = 'focusable-overlay'
 
   var columnWrapper = null
-  var element = null
   var overlay = null
   var isSetup = false
   var isVisible = false
@@ -44,7 +43,7 @@
     var newDiv = document.createElement('div')
     newDiv.id = NODE_ID
     body.insertBefore(newDiv, body.firstChild)
-    overlay = document.querySelector('#' + NODE_ID)
+    overlay = newDiv
     isSetup = true
 
     addStylesheet()
@@ -53,15 +52,7 @@
 
   function addEvents() {
     overlay.addEventListener('click', clickOnOverlay)
-    //window.addEventListener('resize', resizeHandler)
     window.addEventListener('keyup', keyupHandler)
-  }
-
-  function resizeHandler() {
-    if (!element) { return }
-    // Refind the element
-    element = options.findOnResize ? $(element.selector) : element
-    refresh()
   }
 
   function keyupHandler(e) {
@@ -82,7 +73,7 @@
     }
   }
 
-  function setFocus(el, userOptions) {
+  function setFocus(element, userOptions) {
     if (document.readyState !== 'complete') {
       return onBodyReady(setFocus, arguments)
     } else if (body == null) {
@@ -93,8 +84,13 @@
 
     body.style.overflow = 'hidden'
     userOptions = merge(merge({}, options), userOptions)
-    element = getElement(el)
-    createColumns()
+    element = getTargetNode(element)
+    element.style.zIndex = 10000
+    element.style.position = 'relative'
+
+    if (isVisible === false) {
+      createColumns(element)
+    }
     overlay.style.display = 'block'
 
     // the transition won't happen at the same time as display: block; create a short delay
@@ -103,13 +99,13 @@
     }, 50)
   }
 
-  function getElement(el) {
-    return (el instanceof HTMLElement) ? el : el.get(0)
+  function getTargetNode(el) {
+    return el instanceof HTMLElement ? el : el.get(0)
   }
 
   function clearColumns() {
-    /* todo: review -> Convert nodeList into array */
-    var columns = slice.call(overlay.querySelectorAll('.column'))
+    // Returns a NodeList instance with a valid length property
+    var columns = overlay.querySelectorAll('#' + NODE_ID + ' .column')
     for (var i = 0, l = columns.length; i < l; i += 1) {
       columns[i].parentNode.removeChild(columns[i])
     }
@@ -117,21 +113,18 @@
 
   function hide() {
     isVisible = false
-    element = null
     body.style.overflow = ''
     overlay.style.display = 'none'
     clearColumns()
   }
 
-  function createColumns(forceVisibility) {
-    if (!element) { return }
-
+  function createColumns(element, forceVisibility) {
     var createdColumns = 0
     isVisible = true
     clearColumns()
 
     while (createdColumns < 4) {
-      createColumn(createdColumns)
+      createColumn(element, createdColumns)
       createdColumns += 1
     }
 
@@ -140,9 +133,8 @@
     }
   }
 
-  function createColumn(index) {
+  function createColumn(element, index) {
     var offset = element.getBoundingClientRect()
-    var columnDiv = document.createElement('div')
     var top = 0, left = 0, width = px(element.clientWidth), height = '100%'
 
     switch (index) {
@@ -164,47 +156,45 @@
     }
 
     var styles = 'top:' + top + ';left:' + left + ';width:' + width + ';height:' + height
-    columnDiv.className = 'column'
-    columnDiv.setAttribute('style', styles)
-    overlay.appendChild(columnDiv)
+    var column = createColumnDivisor(styles)
+    overlay.appendChild(column)
   }
 
-  /**
-   * Prepend px to the received value
-   * @return {String}
-   */
+  function createColumnDivisor(styles) {
+    var column = document.createElement('div')
+    column.className = 'column'
+    column.setAttribute('style', styles)
+    return column
+  }
+
   function px(value) {
     return value + 'px'
   }
 
-  /**
-   * Create dynamic CSS rules required by the library;
-   * Using this approach we avoid to include an external css file.
-   * @return {Void}
-   */
   function addStylesheet() {
     var sheet = appendStylesheet()
 
-    console.log(options)
-    sheet.insertRule('#' + NODE_ID + '{'
-     + 'display:none;'
-     + 'opacity:0;'
-     + 'transition: opacity ' + options.fadeDuration + 'ms;'
-     + 'position: absolute;'
-     + 'top: 0;'
-     + 'left: 0;'
-     + 'width: 100%;'
-     + 'height: 100%;'
-     + 'z-index: 9999;'
-     + 'overflow: hidden;'
-     + 'pointer-events: none;'
-     + '}', 0)
+    sheet.insertRule('#' + NODE_ID
+    + '{' +
+      + 'display:none;'
+      + 'opacity:0;'
+      + 'transition: opacity ' + options.fadeDuration + 'ms;'
+      + 'position: absolute;'
+      + 'top: 0;'
+      + 'left: 0;'
+      + 'width: 100%;'
+      + 'height: 100%;'
+      + 'z-index: 9999;'
+      + 'overflow: hidden;'
+      + 'pointer-events: none;'
+    + '}', 0)
 
-    sheet.insertRule('#' + NODE_ID + ' .column {'
+    sheet.insertRule('#' + NODE_ID + ' .column'
+    + '{'
       + 'position: absolute;'
       + 'background: rgba(0,0,0,0.8);'
       + 'pointer-events: all;'
-      + '}', 1)
+    + '}', 1)
   }
 
   function appendStylesheet() {
@@ -227,7 +217,7 @@
   }
 
   function refresh() {
-    createColumns(true)
+    createColumns(element, true)
   }
 
   exports.Focusable = {
