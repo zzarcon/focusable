@@ -1,10 +1,10 @@
-# Focusable  [![Build Status](https://travis-ci.org/zzarcon/focusable.svg?branch=master)](https://travis-ci.org/zzarcon/focusable)
+# Focusable [![Build Status](https://travis-ci.org/zzarcon/focusable.svg?branch=master)](https://travis-ci.org/zzarcon/focusable)
 
-An awesome and lightweight library for performing spotlight in your DOM elements, setting an animated overlay to the rest of the page. 
+A lightweight and dependency-free micro library to easily spotlight DOM elements
 
-You can find a [live demo here](http://zzarcon.github.io/focusable/)
+You can find a live demo [here](http://zzarcon.github.io/focusable/)
 
-### Showcase
+## Showcase
 
 ![](https://raw.github.com/zzarcon/focus-element-overlay/master/showcase/list.gif)
 
@@ -12,7 +12,35 @@ You can find a [live demo here](http://zzarcon.github.io/focusable/)
 
 ![](https://raw.github.com/zzarcon/focus-element-overlay/master/showcase/elements.gif)
 
-### API
+## Installation
+
+Install via [Bower](http://bower.io)
+```bash
+bower install focusable
+```
+
+Install via [Component]()
+```bash
+component install zzarcon/focusable
+```
+
+Install via [npm](http://npmjs.org)
+```bash
+npm install focusable
+```
+
+Or loading the script remotely
+```bash
+<script src="//cdn.rawgit.com/zzarcon/focusable/0.1.0/focusable.js"></script>
+```
+
+## Browser Support
+
+![Chrome](https://raw.github.com/alrra/browser-logos/master/chrome/chrome_48x48.png) | ![Firefox](https://raw.github.com/alrra/browser-logos/master/firefox/firefox_48x48.png) | ![IE](https://raw.github.com/alrra/browser-logos/master/internet-explorer/internet-explorer_48x48.png) | ![Opera](https://raw.github.com/alrra/browser-logos/master/opera/opera_48x48.png) | ![Safari](https://raw.github.com/alrra/browser-logos/master/safari/safari_48x48.png)
+--- | --- | --- | --- | --- |
+Canary ✔ | Nightly ✔ | No | ? | No |
+
+## API
 
 ###### Set spotlight (jQuery style)
 
@@ -45,7 +73,8 @@ Focusable.getActiveElement();
 Focusable.getOptions();
 ```
 
-###### Options
+##### Options
+
 Property | Value | Default | Description
 ------------ | ------------- | ------------- | -------------
 fadeDuration | Number | 700 | Duration of the overlay transition (milliseconds).
@@ -53,22 +82,47 @@ hideOnClick | Boolean | false | Hides the overlay when the user click into it.
 hideOnESC | Boolean | false | Hides the overlay when the user press Esc.
 findOnResize | Boolean | false | Refind the element in the DOM in case that the element don't still exists.
 
-###### Runing tests
-* `npm install`
-* `grunt`
-* See the result of testsuite in [http://localhost:9092](http://localhost:9092)
+## Development
 
-###### Dependencies
-- jQuery
+Clone this repository and switch into it
+```bash
+git clone https://github.com/zzarcon/focusable && cd focusable
+```
 
-###### Contributing
+Install development dependencies
+```bash
+npm install
+```
+
+Run tests
+```bash
+make test
+```
+
+Run the example demo and open [localhost:8000](http://localhost:8000)
+```
+make demo
+```
+
+## Contributing
 
 0. Check [open issues](https://github.com/zzarcon/focusable/issues)
-1. [Fork it](https://github.com/zzarcon/focusable/fork)
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
 
-###### Author
-You can follow me on Twitter - https://twitter.com/zzarcon
+1. [Fork it](https://github.com/zzarcon/focusable/fork)
+
+2. Create your feature branch (`git checkout -b my-new-feature`)
+
+3. Commit your changes (`git commit -am 'feat(name): description'`)
+
+4. Push to the branch (`git push origin my-new-feature`)
+
+5. Create a new [Pull Request](https://github.com/zzarcon/focusable/compare/)
+
+## Authors
+
+- [Hector Zarcon](https://github.com/zzarcon)
+- [Tomas Aparicio](https://github.com/h2non)
+
+## License
+
+MIT (c) 2015 - Hector Zarco and contributors
