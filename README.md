@@ -19,14 +19,14 @@ Install via [Bower](http://bower.io)
 bower install focusable
 ```
 
-Install via [Component]()
+Install via [Component](http://component.github.io)
 ```bash
 component install zzarcon/focusable
 ```
 
 Install via [npm](http://npmjs.org)
 ```bash
-npm install focusable
+npm install focuable
 ```
 
 Or loading the script remotely
