@@ -1,4 +1,3 @@
-
 /*! focusable - v.0.1.0 - MIT License - https://github.com/zzarcon/focusable */
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
@@ -14,13 +13,15 @@
 }(this, function (exports) {
   'use strict'
 
+  var NODE_ID = 'focusaable-overlay-layer'
+
   var columnWrapper = null
   var element = null
   var overlay = null
+  var isSetup = false
   var isVisible = false
-  var columnClass = 'focusable-column'
-  var columnSelector = '.' + columnClass
   var body = document.body
+  var columnSelector = '#' + NODE_ID + ' .column'
 
   var slice = Array.prototype.slice
   var hasOwn = Object.prototype.hasOwnProperty
@@ -28,12 +29,11 @@
   var options = {
     fadeDuration: 700,
     hideOnClick: false,
-    hideOnESC: false,
-    findOnResize: false
+    hideOnESC: true,
+    findOnResize: true
   }
 
   function merge(target, source) {
-    target = merge({}, target)
     for (var key in source) if (hasOwn.call(source, key)) {
       target[key] = source[key]
     }
@@ -42,9 +42,10 @@
 
   function setup() {
     var newDiv = document.createElement('div')
-    newDiv.id = 'focusable-overlay-layer'
+    newDiv.id = NODE_ID
     body.insertBefore(newDiv, body.firstChild)
-    overlay = document.querySelector('#focusable-overlay-layer')
+    overlay = document.querySelector('#' + NODE_ID)
+    isSetup = true
 
     addStylesheet()
     addEvents()
@@ -52,14 +53,14 @@
 
   function addEvents() {
     overlay.addEventListener('click', clickOnOverlay)
-    window.addEventListener('resize', resizeHandler)
+    //window.addEventListener('resize', resizeHandler)
     window.addEventListener('keyup', keyupHandler)
   }
 
   function resizeHandler() {
     if (!element) { return }
     // Refind the element
-    //element = options.findOnResize ? $(element.selector) : element
+    element = options.findOnResize ? $(element.selector) : element
     refresh()
   }
 
@@ -72,9 +73,10 @@
     hide()
   }
 
-  function runBodyReady(fn, args) {
+  function onBodyReady(fn, args) {
     document.onreadystatechange = function () {
       if (document.readyState === 'complete') {
+        body = document.body
         fn.apply(null, args)
       }
     }
@@ -82,24 +84,32 @@
 
   function setFocus(el, userOptions) {
     if (document.readyState !== 'complete') {
-      return runBodyReady(setFocus, arguments)
+      return onBodyReady(setFocus, arguments)
+    } else if (body == null) {
+      body = document.body
     }
 
+    if (isSetup === false) { setup() }
+
     body.style.overflow = 'hidden'
-    options = extend(options, userOptions)
-    element = el
+    userOptions = merge(merge({}, options), userOptions)
+    element = getElement(el)
     createColumns()
     overlay.style.display = 'block'
+
     // the transition won't happen at the same time as display: block; create a short delay
     setTimeout(function() {
       overlay.style.opacity = '1'
     }, 50)
   }
 
+  function getElement(el) {
+    return (el instanceof HTMLElement) ? el : el.get(0)
+  }
+
   function clearColumns() {
-    var columns = overlay.querySelectorAll('.column')
     /* todo: review -> Convert nodeList into array */
-    columns = slice.call(columns)
+    var columns = slice.call(overlay.querySelectorAll('.column'))
     for (var i = 0, l = columns.length; i < l; i += 1) {
       columns[i].parentNode.removeChild(columns[i])
     }
@@ -126,7 +136,7 @@
     }
 
     if (forceVisibility === true) {
-      $(columnSelector).show()
+      document.querySelector(columnSelector).style.display = 'block'
     }
   }
 
@@ -145,12 +155,12 @@
         break
       case 2:
         left = px(offset.left)
-        top = px(element.outerHeight() + offset.top)
+        top = px(element.clientHeight + offset.top)
         break
       case 3:
-        width = "100%"
-        left = px((element.outerWidth() + offset.left))
-        break;
+        width = '100%'
+        left = px(element.clientWidth + offset.left)
+        break
     }
 
     var styles = 'top:' + top + ';left:' + left + ';width:' + width + ';height:' + height
@@ -174,14 +184,27 @@
    */
   function addStylesheet() {
     var sheet = appendStylesheet()
-    sheet.insertRule(columnSelector + '{'
+
+    console.log(options)
+    sheet.insertRule('#' + NODE_ID + '{'
      + 'display:none;'
+     + 'opacity:0;'
+     + 'transition: opacity ' + options.fadeDuration + 'ms;'
      + 'position: absolute;'
+     + 'top: 0;'
+     + 'left: 0;'
+     + 'width: 100%;'
+     + 'height: 100%;'
      + 'z-index: 9999;'
-     + 'opacity: 0;'
-     + 'transition: opacity 700ms;'
-     + 'background: rgba(0,0,0,0.8);'
+     + 'overflow: hidden;'
+     + 'pointer-events: none;'
      + '}', 0)
+
+    sheet.insertRule('#' + NODE_ID + ' .column {'
+      + 'position: absolute;'
+      + 'background: rgba(0,0,0,0.8);'
+      + 'pointer-events: all;'
+      + '}', 1)
   }
 
   function appendStylesheet() {
