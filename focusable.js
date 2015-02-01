@@ -1,3 +1,4 @@
+
 /*! focusable - v.0.1.0 - MIT License - https://github.com/zzarcon/focusable */
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
@@ -15,11 +16,13 @@
 
   var columnWrapper = null
   var element = null
+  var overlay = null
   var isVisible = false
   var columnClass = 'focusable-column'
   var columnSelector = '.' + columnClass
+  var body = document.body
 
-  var toArray = Array.prototype.slice
+  var slice = Array.prototype.slice
   var hasOwn = Object.prototype.hasOwnProperty
 
   var options = {
@@ -29,36 +32,34 @@
     findOnResize: false
   }
 
-  function merge(target) {
-    var i, l, x, cur, args = toArray.call(arguments).slice(1)
+  function merge(target, source) {
     target = merge({}, target)
-    for (i = 0, l = args.length; i < l; i += 1) {
-      cur = args[i]
-      for (x in cur) if (hasOwn.call(cur, x)) target[x] = cur[x]
+    for (var key in source) if (hasOwn.call(source, key)) {
+      target[key] = source[key]
     }
     return target
   }
 
-  $(document).ready(setup)
-
   function setup() {
-    columnWrapper = $('body')
+    var newDiv = document.createElement('div')
+    newDiv.id = 'focusable-overlay-layer'
+    body.insertBefore(newDiv, body.firstChild)
+    overlay = document.querySelector('#focusable-overlay-layer')
+
     addStylesheet()
     addEvents()
   }
 
   function addEvents() {
-    columnWrapper.on('click', columnSelector, clickOnOverlay)
-    $(window).on('resize', resizeHandler)
-    $(window).on('keyup', keyupHandler)
+    overlay.addEventListener('click', clickOnOverlay)
+    window.addEventListener('resize', resizeHandler)
+    window.addEventListener('keyup', keyupHandler)
   }
 
   function resizeHandler() {
     if (!element) { return }
-
     // Refind the element
-    element = options.findOnResize ? $(element.selector) : element
-
+    //element = options.findOnResize ? $(element.selector) : element
     refresh()
   }
 
@@ -71,23 +72,45 @@
     hide()
   }
 
-  function setFocus(node, userOptions) {
-    $('body').css('overflow', 'hidden')
-    userOptions = merge(options, userOptions)
-    element = node
+  function runBodyReady(fn, args) {
+    document.onreadystatechange = function () {
+      if (document.readyState === 'complete') {
+        fn.apply(null, args)
+      }
+    }
+  }
+
+  function setFocus(el, userOptions) {
+    if (document.readyState !== 'complete') {
+      return runBodyReady(setFocus, arguments)
+    }
+
+    body.style.overflow = 'hidden'
+    options = extend(options, userOptions)
+    element = el
     createColumns()
-    columnWrapper.find(columnSelector).fadeIn(options.fadeDuration)
+    overlay.style.display = 'block'
+    // the transition won't happen at the same time as display: block; create a short delay
+    setTimeout(function() {
+      overlay.style.opacity = '1'
+    }, 50)
   }
 
   function clearColumns() {
-    columnWrapper.find(columnSelector).remove()
+    var columns = overlay.querySelectorAll('.column')
+    /* todo: review -> Convert nodeList into array */
+    columns = slice.call(columns)
+    for (var i = 0, l = columns.length; i < l; i += 1) {
+      columns[i].parentNode.removeChild(columns[i])
+    }
   }
 
   function hide() {
     isVisible = false
     element = null
-    $('body').css('overflow', '')
-    columnWrapper.find(columnSelector).fadeOut(options.fadeDuration, clearColumns)
+    body.style.overflow = ''
+    overlay.style.display = 'none'
+    clearColumns()
   }
 
   function createColumns(forceVisibility) {
@@ -99,7 +122,7 @@
 
     while (createdColumns < 4) {
       createColumn(createdColumns)
-      createdColumns++
+      createdColumns += 1
     }
 
     if (forceVisibility === true) {
@@ -108,9 +131,9 @@
   }
 
   function createColumn(index) {
-    var styles = ''
-    var offset = element.offset()
-    var top = 0, left = 0, width = px(element.outerWidth()), height = "100%"
+    var offset = element.getBoundingClientRect()
+    var columnDiv = document.createElement('div')
+    var top = 0, left = 0, width = px(element.clientWidth), height = '100%'
 
     switch (index) {
       case 0:
@@ -130,8 +153,10 @@
         break;
     }
 
-    styles = 'top:' + top + ';left:' + left + ';width:' + width + ';height:' + height
-    columnWrapper.prepend('<div class="' + columnClass + '" style="' + styles + '"></div>')
+    var styles = 'top:' + top + ';left:' + left + ';width:' + width + ';height:' + height
+    columnDiv.className = 'column'
+    columnDiv.setAttribute('style', styles)
+    overlay.appendChild(columnDiv)
   }
 
   /**
@@ -153,6 +178,8 @@
      + 'display:none;'
      + 'position: absolute;'
      + 'z-index: 9999;'
+     + 'opacity: 0;'
+     + 'transition: opacity 700ms;'
      + 'background: rgba(0,0,0,0.8);'
      + '}', 0)
   }
