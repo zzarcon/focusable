@@ -1,4 +1,4 @@
-# Focusable [![Build Status](https://travis-ci.org/zzarcon/focusable.svg?branch=master)](https://travis-ci.org/zzarcon/focusable)
+# Focusable [![Build Status](https://travis-ci.org/zzarcon/focusable.svg?branch=master)](https://travis-ci.org/zzarcon/focusable) [![Version](https://img.shields.io/bower/v/focusable.svg)](https://github.com/zzarcon/focusable/releases) [![Gitter chat](https://badges.gitter.im/zzarcon/focusable.png)](https://gitter.im/zzarcon/focusable) [![Stories in Ready](https://badge.waffle.io/zzarcon/focusable.png?label=ready&title=Ready)](https://waffle.io/zzarcon/focusable)
 
 A lightweight and dependency-free micro library to easily spotlight DOM elements
 
