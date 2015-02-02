@@ -79,7 +79,10 @@
   }
 
   function keyupHandler(event) {
-    event.keyCode === 27 && isVisible && hideAll()
+    if (event.keyCode === 27 && isVisible) {
+      hideAll()
+      window.removeEventListener('keyup', keyupHandler)
+    }
   }
 
   function onBodyReady(fn, args) {
@@ -128,19 +131,12 @@
   }
 
   function hide(element) {
-    var index = null
-    for (var i = 0, l = elements.length; i < l; i += 1) {
-      if (elements[i].element === element) {
-        index = i
-        break
-      }
+    var index = findElement(element)
+
+    if (index) {
+      restoreElementStyle(elements[index])
+      elements.splice(index, 1)
     }
-
-    var node = elements[index]
-    node.element.style.zIndex = node.zIndex
-    node.element.style.position = node.position
-
-    elements.splice(index, 1)
 
     if (elements.length) {
       clearColumns()
@@ -150,16 +146,29 @@
     }
   }
 
+  function findElement(element) {
+    var index = -1
+    for (var i = 0, l = elements.length; i < l; i += 1) {
+      if (elements[i].element === element) {
+        index = i
+        break
+      }
+    }
+    return index
+  }
+
   function hideAll() {
     isVisible = false
     body.style.overflow = ''
     overlay.style.display = 'none'
     clearColumns()
 
-    elements.splice(0).forEach(function (node) {
-      node.element.style.zIndex = node.zIndex
-      node.element.style.position = node.position
-    })
+    elements.splice(0).forEach(restoreElementStyle)
+  }
+
+  function restoreElementStyle(node) {
+    node.element.style.zIndex = node.zIndex
+    node.element.style.position = node.position
   }
 
   function createColumns(element) {
@@ -208,7 +217,6 @@
   }
 
   function clearColumns() {
-    // Returns a NodeList instance with a valid length property
     var columns = overlay.querySelectorAll('#' + NODE_ID + ' .column')
     for (var i = 0, l = columns.length; i < l; i += 1) {
       columns[i].parentNode.removeChild(columns[i])
@@ -262,7 +270,6 @@
   exports.Focusable = Focusable
   Focusable.defaults = defaults
   Focusable.hideAll = hideAll
-  Focusable.elements = elements
   Focusable.isVisible = getVisibility
   Focusable.VERSION = VERSION
 
