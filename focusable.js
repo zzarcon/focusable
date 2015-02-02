@@ -13,8 +13,20 @@
 }(this, function (exports) {
   'use strict'
 
+  var VERSION = '0.1.0'
   var NODE_ID = 'focusable-overlay'
 
+  var slice = Array.prototype.slice
+  var hasOwn = Object.prototype.hasOwnProperty
+
+  var defaults = {
+    fadeDuration: 700,
+    hideOnClick: false,
+    hideOnESC: true,
+    findOnResize: true
+  }
+
+  var elements = []
   var columnWrapper = null
   var overlay = null
   var isSetup = false
@@ -22,46 +34,50 @@
   var body = document.body
   var columnSelector = '#' + NODE_ID + ' .column'
 
-  var slice = Array.prototype.slice
-  var hasOwn = Object.prototype.hasOwnProperty
-
-  var options = {
-    fadeDuration: 700,
-    hideOnClick: false,
-    hideOnESC: true,
-    findOnResize: true
-  }
-
-  function merge(target, source) {
-    for (var key in source) if (hasOwn.call(source, key)) {
-      target[key] = source[key]
+  function Focusable(element, options) {
+    if (element && element.length) {
+      element = element[0]
+    } else if (!(element instanceof HTMLElement)) {
+      throw new TypeError('First argument should be a Node or jQuery/Zepto selector')
     }
-    return target
+
+    options = merge(merge({}, defaults), options)
+    spotlightElement(element, options)
+
+    return {
+      element: element,
+      options: options,
+      hide: hide,
+      isVisible: getVisibility
+    }
   }
 
-  function setup() {
+  function getVisibility() {
+    return isVisible
+  }
+
+  function setup(options) {
     var newDiv = document.createElement('div')
     newDiv.id = NODE_ID
     body.insertBefore(newDiv, body.firstChild)
     overlay = newDiv
     isSetup = true
 
-    addStylesheet()
-    addEvents()
+    addEvents(options)
+    addStylesheet(options)
   }
 
-  function addEvents() {
-    overlay.addEventListener('click', clickOnOverlay)
-    window.addEventListener('keyup', keyupHandler)
+  function addEvents(options) {
+    if (options.hideOnESC) {
+      window.addEventListener('keyup', keyupHandler)
+    }
+    if (options.hideOnClick) {
+      overlay.addEventListener('click', hide)
+    }
   }
 
-  function keyupHandler(e) {
-    options.hideOnESC && e.keyCode === 27 && isVisible && hide()
-  }
-
-  function clickOnOverlay() {
-    if (!options.hideOnClick) { return }
-    hide()
+  function keyupHandler(event) {
+    event.keyCode === 27 && isVisible && hide()
   }
 
   function onBodyReady(fn, args) {
@@ -73,20 +89,30 @@
     }
   }
 
-  function setFocus(element, userOptions) {
+  function spotlightElement(element, options) {
     if (document.readyState !== 'complete') {
-      return onBodyReady(setFocus, arguments)
+      return onBodyReady(spotlightElement, arguments)
     } else if (body == null) {
       body = document.body
     }
 
-    if (isSetup === false) { setup() }
+    if (isSetup === false) { setup(options) }
+
+    setFocus(element, options)
+  }
+
+  function setFocus(element, options) {
+    var styleEl = window.getComputedStyle(element)
+
+    elements.push({
+      zIndex: styleEl.getPropertyValue('z-index'),
+      position: styleEl.getPropertyValue('z-index'),
+      element: element
+    })
 
     body.style.overflow = 'hidden'
-    userOptions = merge(merge({}, options), userOptions)
-    element = getTargetNode(element)
-    element.style.zIndex = 10000
     element.style.position = 'relative'
+    element.style.zIndex = 10000
 
     if (isVisible === false) {
       createColumns(element)
@@ -97,10 +123,6 @@
     setTimeout(function() {
       overlay.style.opacity = '1'
     }, 50)
-  }
-
-  function getTargetNode(el) {
-    return el instanceof HTMLElement ? el : el.get(0)
   }
 
   function clearColumns() {
@@ -116,9 +138,14 @@
     body.style.overflow = ''
     overlay.style.display = 'none'
     clearColumns()
+
+    elements.splice(0).forEach(function (node) {
+      node.element.style.zIndex = node.zIndex
+      node.element.style.position = node.position
+    })
   }
 
-  function createColumns(element, forceVisibility) {
+  function createColumns(element) {
     var createdColumns = 0
     isVisible = true
     clearColumns()
@@ -126,10 +153,6 @@
     while (createdColumns < 4) {
       createColumn(element, createdColumns)
       createdColumns += 1
-    }
-
-    if (forceVisibility === true) {
-      document.querySelector(columnSelector).style.display = 'block'
     }
   }
 
@@ -171,7 +194,7 @@
     return value + 'px'
   }
 
-  function addStylesheet() {
+  function addStylesheet(options) {
     var sheet = appendStylesheet()
 
     sheet.insertRule('#' + NODE_ID
@@ -204,29 +227,18 @@
     return style.sheet
   }
 
-  function getActiveElement() {
-    return element
+  function merge(target, source) {
+    for (var key in source) if (hasOwn.call(source, key)) {
+      target[key] = source[key]
+    }
+    return target
   }
 
-  function getOptions() {
-    return options
-  }
-
-  function getVisibility() {
-    return isVisible
-  }
-
-  function refresh() {
-    createColumns(element, true)
-  }
-
-  exports.Focusable = {
-    setFocus: setFocus,
-    hide: hide,
-    refresh: refresh,
-    getActiveElement: getActiveElement,
-    getOptions: getOptions,
-    isVisible: getVisibility
-  }
+  exports.Focusable = Focusable
+  Focusable.defaults = defaults
+  Focusable.hide = hide
+  Focusable.elements = elements
+  Focusable.isVisible = getVisibility
+  Focusable.VERSION = VERSION
 
 }))
