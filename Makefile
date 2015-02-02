@@ -1,7 +1,7 @@
 VERSION = 0.1.0
 UGLIFYJS = ./node_modules/.bin/uglifyjs
 MOCHA_PHANTOM = ./node_modules/.bin/mocha-phantomjs
-HTTP_SERVE = ./node_modules/.bin/http-server
+HTTP_SERVER = ./node_modules/.bin/http-server
 BANNER = "/*! focusable - v$(VERSION) - MIT License - https://github.com/zzarcon/focusable */"
 
 default: all
@@ -15,8 +15,8 @@ uglify:
 mocha:
 	$(MOCHA_PHANTOM) --reporter spec --ui bdd test/runner.html
 
-demo:
-	$(HTTP_SERVER) -p 8000
+demo:	browser
+	$(HTTP_SERVER) -p 8000 .
 
 loc:
 	wc -l focusable.js
