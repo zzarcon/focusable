@@ -42,35 +42,34 @@ Or loading the script remotely
 
 ## API
 
-###### Set spotlight (jQuery style)
+###### Set spotlight using jQuery/Zepto selector
 
 ```javascript
-$('#my-element').setFocus(options);
+Focusable($('#my-element'), options)
 ```
-###### Set spotlight (through library)
+
+###### Set spotlight
 
 ```javascript
-Focusable.setFocus($('#my-element'), options);
+Focusable(document.querySelector('#my-element'), options)
 ```
-###### Refresh current focused element
 
-```javascript
-Focusable.refresh();
-```
 ###### Hide spotlight
 
 ```javascript
-Focusable.hide();
+Focusable.hideAll()
 ```
-###### Get focused element
+
+###### Get focused DOM elements
 
 ```javascript
-Focusable.getActiveElement();
+Focusable.getActiveElements()
 ```
+
 ###### Get options
 
 ```javascript
-Focusable.getOptions();
+Focusable.getOptions()
 ```
 
 ##### Options

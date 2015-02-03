@@ -260,6 +260,12 @@
     return style.sheet
   }
 
+  function getActiveElements() {
+    return elements.map(function (node) {
+      return node.element
+    })
+  }
+
   function merge(target, source) {
     for (var key in source) if (hasOwn.call(source, key)) {
       target[key] = source[key]
@@ -271,6 +277,7 @@
   Focusable.defaults = defaults
   Focusable.hideAll = hideAll
   Focusable.isVisible = getVisibility
+  Focusable.getActiveElements = getActiveElements
   Focusable.VERSION = VERSION
 
 }))
