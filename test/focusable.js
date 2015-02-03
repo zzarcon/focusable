@@ -1,26 +1,17 @@
-(function() {
-  "use strict";
+function isActive() {
+  var areColumnsInDom = $('.focusable-column').length === 4;
+  return areColumnsInDom;
+}
 
-  function isActive() {
-    var areColumnsInDom = $('.focusable-column').length === 4;
+/**
+ * Return a element wrapping the find in the quinit fixture DOM
+ */
+function find(selector) {
+  return $('#qunit-fixture').find(selector);
+}
 
-    return areColumnsInDom;
-  }
-
-  /**
-   * Return a element wrapping the find in the quinit fixture DOM
-   */
-  function find(selector) {
-    return $('#qunit-fixture').find(selector);
-  }
-
-  module("Focusable", {
-    setup: function() {
-
-    }
-  });
-
-  test("Set focus on an element", function() {
+suite('focusable', function () {
+  test('Set focus on an element', function() {
     var $element = find('header');
     Focusable.setFocus($element);
 
@@ -32,7 +23,7 @@
     ok(typeof find('header').focusable === 'function', true, 'The library is defined as jQuery plugin');
   });
 
-  //This test guarantees the default options, because a change in these options will be a breaking change
+  // This test guarantees the default options, because a change in these options will be a breaking change
   test("Default options", function() {
     var options = Focusable.getOptions();
 
@@ -65,4 +56,4 @@
     $('#overlay-layer .column:first').click();
     assert.ok(isActive(), false, 'The overlay is inactive');
   });
-})();
+})

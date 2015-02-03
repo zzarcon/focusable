@@ -1,28 +1,24 @@
 {
   "name": "focusable",
   "version": "0.1.0",
+  "license": "MIT",
   "description": "Spotlight on DOM elements adding an overlay on the rest of the page",
-  "main": "focusable.js",
   "repository": "zzarcon/focusable",
   "authors": [
-    "Hector Zarcon (zzarcon)",
+    "Hector Zarco (zzarcon)",
     "Tomas Aparicio (h2non)"
   ],
-  "license": "MIT",
-  "scripts": {
-    "test": "make test"
-  },
+  "main": "focusable.js",
+  "scripts": [
+    "focusable.js",
+    "focusable.min.js",
+    "focusable.min.js.map"
+  ],
   "keywords": [
     "focus",
     "dom",
     "element",
     "overlay",
     "spotlight"
-  ],
-  "devDependencies": {
-    "http-server": "^0.7.4",
-    "mocha-phantomjs": "^3.5.3",
-    "sinon": "^1.12.2",
-    "uglify-js": "^2.4.16"
-  }
+  ]
 }
