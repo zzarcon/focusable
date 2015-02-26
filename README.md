@@ -44,6 +44,9 @@ fadeDuration | Number | 700 | Duration of the overlay transition (milliseconds).
 hideOnClick | Boolean | false | Hides the overlay when the user click into it.
 hideOnESC | Boolean | false | Hides the overlay when the user press Esc.
 findOnResize | Boolean | false | Refind the element in the DOM in case that the element don't still exists.
+scrollToElement | Boolean | false | Scrolls to the focused element if it is not visible in the viewport.
+scrollTopPadding | Number | 0 | Adds extra padding when scrolling up - use when a navbar is attached to the top of the screen.
+scrollBottomPadding | Number | 0 | Adds extra padding when scrolling down - use when a navbar is attached to the bottom of the screen.
 
 ###### Runing tests
 * `npm install`
