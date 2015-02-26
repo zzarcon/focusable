@@ -96,12 +96,13 @@
     //Determines if the element to be focused is visible within the viewport
     function elementIsVisible(el) {
         var rect = el.getBoundingClientRect();
+        var winDimens = getWindowDimensions();
 
         return (
-          rect.top >= 0 &&
+          rect.top >= options.scrollTopPadding &&
           rect.left >= 0 &&
-          (rect.bottom + 80) <= window.innerHeight && //80 pixel padding
-          rect.right <= window.innerWidth
+          (rect.bottom + options.scrollBottomPadding) <= winDimens.height &&
+          rect.right <= winDimens.width
         );
     }
 
@@ -137,10 +138,10 @@
                 top = elDimens.bottom - (elDimens.bottom - elDimens.top),
                 bottom = elDimens.bottom - winDimens.height;
 
-                if (top < 0 || rawElement.clientHeight > winDimens.height) {
-                    window.scrollBy(0, (top - 30) - options.scrollTopPadding);
+                if (top - options.scrollTopPadding < 0 || rawElement.clientHeight > winDimens.height) {
+                    window.scrollBy(0, (top - 100) - options.scrollTopPadding); //Extra padding so element is not right at the edge of the screen
                 } else {
-                    window.scrollBy(0, (bottom + 100) + options.scrollBottomPadding);
+                    window.scrollBy(0, (bottom + 100) + options.scrollBottomPadding); //Extra padding so element is not right at the edge of the screen
                 }
             }
 
