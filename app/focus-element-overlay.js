@@ -123,13 +123,13 @@
   } 
 
   function setFocus($el, userOptions) {
+    $element = $el;
+    options = $.extend(options, userOptions);
     var rawElement = $el.get(0);
 
     //Do not try to focus if element does not exist
     if (rawElement) {
       $('body').css('overflow', 'hidden');
-      options = $.extend(options, userOptions);
-      $element = $el;
       createColumns();
 
       if (options.scrollToElement && !elementIsVisible(rawElement)) {
