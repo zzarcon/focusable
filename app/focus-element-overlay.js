@@ -35,7 +35,10 @@
     fadeDuration: 700,
     hideOnClick: false,
     hideOnESC: false,
-    findOnResize: false
+    findOnResize: false,
+    scrollToElement: false,
+    scrollTopPadding: 0,
+    scrollBottomPadding: 0,
   };
 
   $(document).ready(setup);
@@ -52,7 +55,7 @@
    * @return {jQuery object} this
    */
   function createPlugin() {
-    if (!window.jQuery || !window.$ || !window.$.fn) {
+    if (!window.jQuery || !window.$ || !window.$.fn) {
       return;
     }
 
@@ -90,12 +93,63 @@
     hide();
   }
 
+    //Determines if the element to be focused is visible within the viewport
+  function elementIsVisible(el) {
+    var rect = el.getBoundingClientRect();
+    var winDimens = getWindowDimensions();
+
+    return (
+      rect.top >= options.scrollTopPadding &&
+      rect.left >= 0 &&
+      (rect.bottom + options.scrollBottomPadding) <= winDimens.height &&
+      rect.right <= winDimens.width
+    );
+  }
+
+    //Returns height and width of window. Cross-browser compatible.
+  function getWindowDimensions() {
+    if (window.innerWidth != undefined) {
+      return {
+        width: window.innerWidth,
+        height: window.innerHeight
+      };
+    } else {
+      var doc = document.documentElement;
+      return {
+        width: doc.clientWidth,
+        height: doc.clientHeight
+      };
+    }
+  } 
+
   function setFocus($el, userOptions) {
-    $('body').css('overflow', 'hidden');
-    options = $.extend(options, userOptions);
     $element = $el;
-    createColumns();
-    $columnWrapper.find(columnSelector).fadeIn(options.fadeDuration);
+    options = $.extend(options, userOptions);
+    var rawElement = $el.get(0);
+
+    //Do not try to focus if element does not exist
+    if (rawElement) {
+      $('body').css('overflow', 'hidden');
+      createColumns();
+
+      if (options.scrollToElement && !elementIsVisible(rawElement)) {
+        var elDimens = rawElement.getBoundingClientRect(),
+        winDimens = getWindowDimensions(),
+        top = elDimens.bottom - (elDimens.bottom - elDimens.top),
+        bottom = elDimens.bottom - winDimens.height;
+
+        if (top - options.scrollTopPadding < 0 || rawElement.clientHeight > winDimens.height) {
+          window.scrollBy(0, (top - 100) - options.scrollTopPadding); //Extra padding so element is not right at the edge of the screen
+        } else {
+          window.scrollBy(0, (bottom + 100) + options.scrollBottomPadding); //Extra padding so element is not right at the edge of the screen
+        }
+      }
+
+      $columnWrapper.find(columnSelector).fadeIn(options.fadeDuration);
+    }
+    else {
+      throw "Focusable: Target element does not exist.";
+    }
   };
 
   function clearColumns() {
