@@ -26,26 +26,35 @@
  */
 
 (function(exports) {
+  var hasOwn = Object.prototype.hasOwnProperty;
   var $columnWrapper = null;
   var $element = null;
   var isVisible = false;
   var columnClass = 'focusable-column';
   var columnSelector = '.' + columnClass;
-  var options = {
+  var defaults = {
     fadeDuration: 700,
     hideOnClick: false,
     hideOnESC: false,
-    findOnResize: false
+    findOnResize: false,
+    context: 'body'
   };
+  var options = {};
+  var previousCssPosition = null;
 
   $(document).ready(setup);
 
   function setup() {
-    $columnWrapper = $('body');
+    // $columnWrapper = $('body');
     createPlugin();
     addStylesheet();
     addEvents();
   }
+
+  function getDefaults() {
+    return defaults;
+  }
+
 
   /**
    * Defines Focusable as jQuey plugin
@@ -63,7 +72,7 @@
   }
 
   function addEvents() {
-    $columnWrapper.on('click', columnSelector, clickOnOverlay);
+    // $columnWrapper.on('click', columnSelector, clickOnOverlay);
     $(window).on("resize", resizeHandler);
     $(window).on("keyup", keyupHandler);
   }
@@ -91,10 +100,19 @@
   }
 
   function setFocus($el, userOptions) {
-    $('body').css('overflow', 'hidden');
-    options = $.extend(options, userOptions);
-    $element = $el;
-    createColumns();
+    
+    options = merge(merge({}, defaults), userOptions);
+    $columnWrapper = $(options.context);
+    previousCssPosition = $columnWrapper.css('position');
+    if ($columnWrapper.css('position') === 'static' && !$columnWrapper.is('body')) {
+      $columnWrapper.css('position', 'relative');
+    }
+    $element = $columnWrapper.find($el);
+
+    $columnWrapper.css('overflow', 'hidden');
+
+    $columnWrapper.on('click', columnSelector, clickOnOverlay);
+    createColumns(false);
     $columnWrapper.find(columnSelector).fadeIn(options.fadeDuration);
   };
 
@@ -105,8 +123,13 @@
   function hide() {
     isVisible = false;
     $element = null;
-    $('body').css('overflow', '');
-    $columnWrapper.find(columnSelector).fadeOut(options.fadeDuration, clearColumns);
+    $columnWrapper.find(columnSelector).fadeOut(options.fadeDuration, function() {
+      clearColumns();
+      $columnWrapper.css('overflow', '');
+      $columnWrapper.css('position', previousCssPosition);
+      previousCssPosition = null;
+    });
+
   }
 
   function createColumns(forceVisibility) {
@@ -129,25 +152,43 @@
   }
 
   function createColumn(index) {
+    var offset = 0;
+    var top = 0,
+        left = 0,
+        width = px($element.outerWidth()),
+        height = "100%",
+        parentTop = 0,
+        parentLeft = 0;
+
+
     var offset = $element.offset();
-    var top = 0, left = 0, width = px($element.outerWidth()), height = "100%";
+    var contextOffset = $columnWrapper.offset();
+
+    if (options.context) {
+      // offset = $element.position();
+      parentTop = contextOffset.top;
+      parentLeft = contextOffset.left;
+    } else {
+      offset = $element.offset();
+    }
+
     var styles = '';
 
     switch (index) {
       case 0:
-        width = px(offset.left);
+        width = px(offset.left - parentLeft);
         break;
       case 1:
-        left = px(offset.left);
-        height = px(offset.top);
+        left = px(offset.left - parentLeft);
+        height = px(offset.top - parentTop);
         break;
       case 2:
-        left = px(offset.left);
-        top = px($element.outerHeight() + offset.top);
+        left = px(offset.left - parentLeft);
+        top = px($element.outerHeight() + offset.top - parentTop);
         break;
       case 3:
         width = "100%";
-        left = px(($element.outerWidth() + offset.left));
+        left = px(($element.outerWidth() + offset.left - parentLeft));
         break;
     }
 
@@ -195,6 +236,13 @@
 
   function refresh() {
     createColumns(true);
+  }
+
+  function merge(target, source) {
+    for (var key in source) if (hasOwn.call(source, key)) {
+      target[key] = source[key];
+    }
+    return target;
   }
 
   exports.Focusable = {

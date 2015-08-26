@@ -25,7 +25,7 @@
     Focusable.setFocus($element);
 
     ok(isActive(), true, 'The overlay is in DOM');
-    ok(Focusable.getActiveElement() == $element, true, 'The focused element is active');
+    ok(Focusable.getActiveElement()[0] == $element[0], true, 'The focused element is active');
   });
 
   test("jQuery plugin", function() {

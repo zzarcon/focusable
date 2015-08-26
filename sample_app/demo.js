@@ -8,6 +8,9 @@
     function show() {
       var selector = $(this).attr('data-selector');
       var options = getOptions();
+      if ($(this).attr('data-context')) {
+        options.context = $(this).attr('data-context');
+      }
       Focusable.setFocus($(selector), options);
     }
 
@@ -21,7 +24,7 @@
       fadeDuration: parseInt($('#fade-duration').val()),
       hideOnClick: $('#hide-on-click').is(':checked'),
       hideOnESC: $('#hide-on-esc').is(':checked'),
-      findOnResize: $('#find-on-resize').is(':checked')
+      findOnResize: $('#find-on-resize').is(':checked'),
     };
   }
 })();
