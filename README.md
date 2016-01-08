@@ -46,6 +46,7 @@ fadeDuration | Number | 700 | Duration of the overlay transition (milliseconds).
 hideOnClick | Boolean | false | Hides the overlay when the user click into it.
 hideOnESC | Boolean | false | Hides the overlay when the user press Esc.
 findOnResize | Boolean | false | Refind the element in the DOM in case that the element don't still exists.
+circle | Boolean | false | Have the spotlight in a circle shape
 
 ###### Runing tests
 * `npm install`
