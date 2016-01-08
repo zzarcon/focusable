@@ -95,6 +95,11 @@
     options = $.extend(options, userOptions);
     $element = $el;
     createColumns();
+
+    if (options.circle) {
+      createCircle();
+    }
+
     $columnWrapper.find(columnSelector).fadeIn(options.fadeDuration);
   };
 
@@ -153,6 +158,39 @@
 
     styles = 'top:' + top + ';left:' + left + ';width:' + width + ';height:' + height;
     $columnWrapper.prepend('<div class="' + columnClass + '" style="' + styles + '"></div>');
+  }
+
+  /**
+   * Create an svg node that outputs a rectangle with a hole in center
+   * @return {jQuery object}
+   */
+  function makeRectWithHole (width, height, radius) {
+     return $(
+      '<svg width=' + width + ' height=' + height + '>' +
+      '<defs>' +
+      '    <mask id="hole">' +
+      '        <rect width="100%" height="100%" fill="white"/>' +
+      '        <circle r="' + radius +  '" cx="' + (width/2) + '" cy="' +  (height/2) +'" />' +
+      '    </mask>' +
+      '</defs>' +
+      '<rect id="donut" style="fill:rgba(0,0,0,0.8);" width="' + width +'" height="' + height + '" mask="url(#hole)" />' +
+      '</svg>');
+  };
+
+  /**
+   * Add a hole
+   * * @return {Void}
+   */
+  function createCircle() {
+    var bcr = $element.get(0).getBoundingClientRect();
+    var circle = makeRectWithHole(bcr.width, bcr.height, bcr.width/2);
+    circle.attr('class', columnClass);
+    circle.css({
+      left: bcr.left,
+      top: bcr.top,
+      background: 'transparent'
+    });
+    $columnWrapper.prepend(circle);
   }
 
   /**

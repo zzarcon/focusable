@@ -2,7 +2,7 @@
   "use strict";
 
   function isActive() {
-    var areColumnsInDom = $('.focusable-column').length === 4;
+    var areColumnsInDom = $('.focusable-column').not('svg').length === 4;
 
     return areColumnsInDom;
   }
@@ -64,5 +64,15 @@
     //Simulate click on overlay
     $('#overlay-layer .column:first').click();
     assert.ok(isActive(), false, 'The overlay is inactive');
+  });
+
+  test("Circle option", function() {
+    var $element = find('header');
+    Focusable.setFocus($element, { circle: true });
+
+    ok(isActive(), true, 'The overlay is in DOM');
+    ok(Focusable.getActiveElement() == $element, true, 'The focused element is active');
+    ok($('svg.focusable-column').length === 1);
+
   });
 })();
