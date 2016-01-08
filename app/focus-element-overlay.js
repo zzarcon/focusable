@@ -183,7 +183,7 @@
    */
   function createCircle() {
     var bcr = $element.get(0).getBoundingClientRect();
-    var circle = makeRectWithHole(bcr.width, bcr.height, bcr.width/2);
+    var circle = makeRectWithHole(bcr.width, bcr.height, Math.min(bcr.width/2, bcr.height/2));
     circle.attr('class', columnClass);
     circle.css({
       left: bcr.left,
