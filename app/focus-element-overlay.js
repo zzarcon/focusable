@@ -132,7 +132,7 @@
     var doc = document.documentElement;
     var scleft = (window.pageXOffset || doc.scrollLeft) - (doc.clientLeft || 0);
     var sctop = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
-    var clheight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+    var clheight = window.innerHeight || doc.clientHeight || document.body.clientHeight;
     var offset = $element.offset();
     var top = px(sctop), left = px(scleft), width = px($element.outerWidth()), height = px(clheight);
     var styles = '';
