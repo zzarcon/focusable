@@ -129,26 +129,30 @@
   }
 
   function createColumn(index) {
+    var doc = document.documentElement;
+    var scleft = (window.pageXOffset || doc.scrollLeft) - (doc.clientLeft || 0);
+    var sctop = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
+    var clheight = window.innerHeight || doc.clientHeight || document.body.clientHeight;
     var offset = $element.offset();
-    var top = 0, left = 0, width = px($element.outerWidth()), height = "100%";
+    var top = px(sctop), left = px(scleft), width = px($element.outerWidth()), height = px(clheight);
     var styles = '';
 
     switch (index) {
-      case 0:
-        width = px(offset.left);
-        break;
-      case 1:
-        left = px(offset.left);
-        height = px(offset.top);
-        break;
-      case 2:
-        left = px(offset.left);
-        top = px($element.outerHeight() + offset.top);
-        break;
-      case 3:
-        width = "100%";
-        left = px(($element.outerWidth() + offset.left));
-        break;
+    case 0:
+      width = px(offset.left);
+      break;
+    case 1:
+      left = px(offset.left);
+      height = px(offset.top - sctop);
+      break;
+    case 2:
+      left = px(offset.left);
+      top = px($element.outerHeight() + offset.top);
+      break;
+    case 3:
+      width = "100%";
+      left = px(($element.outerWidth() + offset.left));
+      break;
     }
 
     styles = 'top:' + top + ';left:' + left + ';width:' + width + ';height:' + height;
