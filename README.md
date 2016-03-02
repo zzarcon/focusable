@@ -13,6 +13,11 @@ You can find a [live demo here](http://zzarcon.github.io/focusable/).
 
 ![](https://raw.github.com/zzarcon/focus-element-overlay/master/showcase/elements.gif)
 
+### Installation
+`$ npm i focusable-element --save`
+
+`$ bower i focusable`
+
 ### API
 ###### Set spotlight (jQuery style)
 ```javascript
