@@ -8,6 +8,7 @@
     function show() {
       var selector = $(this).attr('data-selector');
       var options = getOptions();
+      options.circle = $(this).is('[data-selector-circle]');
       Focusable.setFocus($(selector), options);
     }
 
