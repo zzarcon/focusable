@@ -1,3 +1,4 @@
 {
-  "managers": ["bower", "npm"]
+  "managers": ["bower", "npm"],
+  "build_command": "grunt release"
 }
