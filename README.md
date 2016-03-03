@@ -16,7 +16,7 @@ You can find a [live demo here](http://zzarcon.github.io/focusable/).
 ### Installation
 `$ npm i focusable-element --save`
 
-`$ bower i focusable`
+`$ bower i focusable-element`
 
 ### API
 ###### Set spotlight (jQuery style)
